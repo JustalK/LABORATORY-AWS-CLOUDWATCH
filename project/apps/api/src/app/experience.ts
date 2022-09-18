@@ -10,8 +10,6 @@ const AWS = require('aws-sdk');
 const { logger } = require('../logger/winston');
 const router = express.Router();
 
-console.log(logger);
-
 const access = {
   accessKeyId: process.env.ACCESS_KEY,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
