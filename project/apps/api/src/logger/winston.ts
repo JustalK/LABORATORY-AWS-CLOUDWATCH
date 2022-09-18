@@ -24,22 +24,15 @@ const cloudwatchConfig = {
     },
     region: process.env.REGION,
   },
-  messageFormatter: ({ level, message, additionalInfo }) =>
-    `[${level}] : ${message} \nAdditional Info: ${JSON.stringify(
-      additionalInfo
-    )}}`,
+  retentionInDays: 30,
+  name: 'Test',
+  messageFormatter: ({ level, message, additionalInfo }) => {
+    const data = additionalInfo
+      ? `\nData: ${JSON.stringify(additionalInfo)}`
+      : '';
+
+    return `[${level}] ${message}${data}`;
+  },
 };
 
 logger.add(new WinstonCloudWatch(cloudwatchConfig));
-
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
-}
